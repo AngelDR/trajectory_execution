@@ -8,6 +8,10 @@ find_package(catkin REQUIRED
   roscpp rospy
   moveit_msgs)
 
+find_package(catkin REQUIRED COMPONENTS moveit_core moveit_ros_planning moveit_ros_planning_interface pluginlib cmake_modules)
+
+find_package(Boost REQUIRED system filesystem date_time thread)
+
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system)
 
@@ -80,9 +84,11 @@ find_package(Boost REQUIRED COMPONENTS system)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES trajectory_execution
-    CATKIN_DEPENDS moveit_msgs roscpp rospy
+    CATKIN_DEPENDS moveit_core moveit_ros_planning_interface moveit_msgs roscpp rospy
 #  DEPENDS system_lib
 )
+
+find_package(Eigen REQUIRED)
 
 
 ###########
@@ -92,6 +98,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
+include_directories(SYSTEM ${Boost_INCLUDE_DIR} ${EIGEN_INCLUDE_DIRS})
 include_directories(${catkin_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS})
 
@@ -102,6 +109,7 @@ link_directories(${catkin_LIBRARY_DIRS})
 
 ## Declare a cpp executable
 add_executable(trajectory_execution_node src/trajectory_execution.cpp)
+add_executable(pa10_shadow_trajectory_generator_node src/pa10_shadow_trajectory_generator.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
@@ -109,7 +117,7 @@ add_executable(trajectory_execution_node src/trajectory_execution.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(trajectory_execution_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-
+target_link_libraries(pa10_shadow_trajectory_generator_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 #############
 ## Install ##
@@ -132,13 +140,15 @@ target_link_libraries(trajectory_execution_node ${catkin_LIBRARIES} ${Boost_LIBR
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 install(TARGETS trajectory_execution_node DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
+install(TARGETS pa10_shadow_trajectory_generator_node DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/
 #   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 #   FILES_MATCHING PATTERN "*.h"
 #   PATTERN ".svn" EXCLUDE
 # )
+install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES

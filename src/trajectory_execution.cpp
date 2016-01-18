@@ -41,7 +41,7 @@ public:
       w2_pub.publish((double) _points.at(i).positions[5]);
       ROS_INFO("Punto de trayectoria %d", i);
       ros::spinOnce;
-      sleep(1.0);
+      //sleep(1.0);
     }
   }
 
