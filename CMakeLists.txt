@@ -6,7 +6,8 @@ project(trajectory_execution)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED
   roscpp rospy
-  moveit_msgs)
+  moveit_msgs
+  tf )
 
 find_package(catkin REQUIRED COMPONENTS moveit_core moveit_ros_planning moveit_ros_planning_interface pluginlib cmake_modules)
 
@@ -109,7 +110,7 @@ link_directories(${catkin_LIBRARY_DIRS})
 
 ## Declare a cpp executable
 add_executable(trajectory_execution_node src/trajectory_execution.cpp)
-add_executable(pa10_shadow_trajectory_generator_node src/pa10_shadow_trajectory_generator.cpp)
+add_executable(shadow_pa10_trajectory_foam_generator src/shadow_pa10_trajectory_1_foam.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
@@ -117,7 +118,7 @@ add_executable(pa10_shadow_trajectory_generator_node src/pa10_shadow_trajectory_
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(trajectory_execution_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-target_link_libraries(pa10_shadow_trajectory_generator_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(shadow_pa10_trajectory_foam_generator ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 #############
 ## Install ##
@@ -140,7 +141,7 @@ target_link_libraries(pa10_shadow_trajectory_generator_node ${catkin_LIBRARIES} 
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 install(TARGETS trajectory_execution_node DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-install(TARGETS pa10_shadow_trajectory_generator_node DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+install(TARGETS shadow_pa10_trajectory_foam_generator DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/
 #   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}

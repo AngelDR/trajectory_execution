@@ -11,6 +11,7 @@ private:
 
   ros::Publisher base_pub;
   ros::Publisher s2_pub;
+  ros::Publisher s3_pub;
   ros::Publisher e1_pub; 
   ros::Publisher e2_pub;
   ros::Publisher w1_pub; 
@@ -24,21 +25,36 @@ public:
   {
     ROS_INFO("Recibida trayectoria");
     moveit_msgs::RobotTrajectory _robot_trajectory = msg->trajectory[0];
-    ROS_INFO("Robot trajectory");
+    //ROS_INFO("Robot trajectory");
     trajectory_msgs::JointTrajectory _joint_trajectory = _robot_trajectory.joint_trajectory;
-    ROS_INFO("Joint trajectory");
+    //ROS_INFO("Joint trajectory");
     std::vector<trajectory_msgs::JointTrajectoryPoint> _points = _joint_trajectory.points;
-    ROS_INFO("Points vector");
+    //ROS_INFO("Points vector");
 
 
-    for(int i=1; i < _points.size(); i++){
+    for(int i=0; i < _points.size(); i++){
       //publish data
       base_pub.publish((double) _points.at(i).positions[0]);
+            ROS_INFO("Punto de trayectoria %f", _points.at(i).positions[0]);
+
       s2_pub.publish((double) _points.at(i).positions[1]);
-      e1_pub.publish((double) _points.at(i).positions[2]);
-      e2_pub.publish((double) _points.at(i).positions[3]);
-      w1_pub.publish((double) _points.at(i).positions[4]);
-      w2_pub.publish((double) _points.at(i).positions[5]);
+            ROS_INFO("Punto de trayectoria %f", _points.at(i).positions[1]);
+
+      s3_pub.publish((double) _points.at(i).positions[2]);
+            ROS_INFO("Punto de trayectoria %f", _points.at(i).positions[2]);
+
+      e1_pub.publish((double) _points.at(i).positions[3]);
+            ROS_INFO("Punto de trayectoria %f", _points.at(i).positions[3]);
+
+      e2_pub.publish((double) _points.at(i).positions[4]);
+            ROS_INFO("Punto de trayectoria %f", _points.at(i).positions[4]);
+
+      w1_pub.publish((double) _points.at(i).positions[5]);
+            ROS_INFO("Punto de trayectoria %f", _points.at(i).positions[5]);
+
+      w2_pub.publish((double) _points.at(i).positions[6]);
+            ROS_INFO("Punto de trayectoria %f", _points.at(i).positions[6]);
+
       ROS_INFO("Punto de trayectoria %d", i);
       ros::spinOnce;
       //sleep(1.0);
@@ -48,12 +64,13 @@ public:
   //Constructor
   NodeClass()
   {
-    base_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_6dof/joint_base_to_s2_position_controller/command", 1000);
-    s2_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_6dof/joint_s2_to_s3_position_controller/command", 1000);
-    e1_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_6dof/joint_e1_to_e2_position_controller/command", 1000);
-    e2_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_6dof/joint_e2_to_w1_position_controller/command", 1000);
-    w1_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_6dof/joint_w1_to_w2_position_controller/command", 1000);
-    w2_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_6dof/joint_w2_to_eef_position_controller/command", 1000);
+      base_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_7dof/joint_base_to_s2_position_controller/command", 1000);
+      s2_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_7dof/joint_s2_to_s3_position_controller/command", 1000);
+      s3_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_7dof/joint_s3_to_e1_position_controller/command", 1000);
+      e1_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_7dof/joint_e1_to_e2_position_controller/command", 1000);
+      e2_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_7dof/joint_e2_to_w1_position_controller/command", 1000);
+      w1_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_7dof/joint_w1_to_w2_position_controller/command", 1000);
+      w2_pub = n.advertise<std_msgs::Float64>("/shadow_pa10_7dof/joint_w2_to_eef_position_controller/command", 1000);
 
   }
 };
